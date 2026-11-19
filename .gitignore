@@ -1,0 +1,12 @@
+# 原始数据集（体积大，请自行下载）
+data/*.zip
+data/*.tsv
+data/2026*/
+data/**/ISSUERS.tsv
+data/**/OFFERING.tsv
+data/**/FORMDSUBMISSION.tsv
+
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

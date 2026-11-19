@@ -1,10 +1,15 @@
-# 原始数据集（体积大，请自行下载）
+# 原始数据集（体积大，用 scripts/fetch_formd.ps1 现取）
 data/*.zip
 data/*.tsv
 data/2026*/
 data/**/ISSUERS.tsv
 data/**/OFFERING.tsv
 data/**/FORMDSUBMISSION.tsv
+
+# 分批中间结果
+data/batch_*.csv
+data/*_result.csv
+data/candidates.csv
 
 __pycache__/
 *.pyc

@@ -83,4 +83,4 @@
 
 同一时间把整个流程沉淀成了一个 skill 仓库，包含四步脚本、域名探测规则、12 个坑的解法。
 
-见：[us-funding-lead-research](../us-funding-lead-research)
+见仓库根目录的 [SKILL.md](../SKILL.md) 与 [references/pitfalls.md](pitfalls.md)

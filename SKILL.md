@@ -8,7 +8,7 @@ description: |
   冷邮件名单, ICP 筛选, 客户清单, B2B 线索
 ---
 
-# 美国融资公司客户线索研究
+# us-funding-lead-research — 线索研究方法
 
 从「谁刚拿到钱」推导到「谁需要我们」，产出可直接发信的线索表。
 
@@ -137,13 +137,14 @@ brand = 法定名去掉 Inc/LLC/Corp/Co/Ltd
 
 ## 参考资料
 
-- `references/pitfalls.md` —— 实测踩过的 12 个坑与验证过的解法
-- `references/domain-playbook.md` —— 域名探测完整规则与异常案例
-- `references/field-notes.md` —— 160 家实测数据分布与命中率
+- [references/pitfalls.md](references/pitfalls.md) —— 实测踩过的 12 个坑与验证过的解法
+- [references/domain-playbook.md](references/domain-playbook.md) —— 域名探测完整规则与异常案例
+- [references/field-notes.md](references/field-notes.md) —— 160 家实测数据分布与命中率
+- [references/my-answer.md](references/my-answer.md) —— 一次完整作业的答案与复盘
 
 ## 脚本
 
-- `scripts/fetch_formd.ps1` —— 下载并解压 Form D 数据集
-- `scripts/filter_formd.ps1` —— 三层过滤，输出候选清单
-- `scripts/probe_domains.ps1` —— 域名探测 + 停放页过滤
-- `scripts/score_leads.ps1` —— 排序打分
+- [scripts/fetch_formd.ps1](scripts/fetch_formd.ps1) —— 下载并解压 Form D 数据集
+- [scripts/filter_formd.ps1](scripts/filter_formd.ps1) —— 三层过滤，输出候选清单
+- [scripts/probe_domains.ps1](scripts/probe_domains.ps1) —— 域名探测 + 停放页过滤
+- [scripts/score_leads.ps1](scripts/score_leads.ps1) —— 排序打分

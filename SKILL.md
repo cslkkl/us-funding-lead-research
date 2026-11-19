@@ -144,7 +144,34 @@ brand = 法定名去掉 Inc/LLC/Corp/Co/Ltd
 
 ## 脚本
 
-- [scripts/fetch_formd.ps1](scripts/fetch_formd.ps1) —— 下载并解压 Form D 数据集
-- [scripts/filter_formd.ps1](scripts/filter_formd.ps1) —— 三层过滤，输出候选清单
-- [scripts/probe_domains.ps1](scripts/probe_domains.ps1) —— 域名探测 + 停放页过滤
-- [scripts/score_leads.ps1](scripts/score_leads.ps1) —— 排序打分
+五步流程，一条命令一环：
+
+| 脚本 | 做什么 |
+|---|---|
+| [selftest.ps1](scripts/selftest.ps1) | 自检：22 项环境与完整性检查，先跑这个 |
+| [fetch_formd.ps1](scripts/fetch_formd.ps1) | 下载并解压 Form D 季度数据集 |
+| [filter_formd.ps1](scripts/filter_formd.ps1) | 三层过滤，输出候选清单 |
+| [probe_domains.ps1](scripts/probe_domains.ps1) | 域名探测 + 停放页过滤 |
+| [score_leads.ps1](scripts/score_leads.ps1) | 五维打分排序 |
+| [build_report.ps1](scripts/build_report.ps1) | 生成 HTML 与 PDF 报告 |
+
+## 配置
+
+所有阈值集中在 [config/default.json](config/default.json)，改参数不用改脚本：
+
+- **金额区间**：`filter.minAmountUsd` / `maxAmountUsd`
+- **行业白名单**：`filter.industries`
+- **打分权重**：`scoring.weights`
+- **实施需求关键词**：`scoring.implementationKeywords`
+- **停放页判据**：`probe.parkingPatterns`
+
+换业务方向只改配置。例如做数据服务：`industries` 换成 `["Other Health Care"]`，`minAmountUsd` 调到 300 万。
+
+## 已验证
+
+同一套脚本跑过两个季度，无需修改：
+
+| 季度 | 申报数 | 过滤结果 |
+|---|---|---|
+| 2026 Q3 | 15,952 | 160 家 |
+| 2026 Q1 | 15,734 | 181 家 |

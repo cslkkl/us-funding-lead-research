@@ -66,37 +66,97 @@ Form D 只有法定名和金额，没有业务描述。`LONE PALM LABS, INC.` �
 | 不核对同名公司 | Marble、Quaestor 都撞了 | 城市 + 业务双重核对 |
 | 拼邮箱 | bounce 损伤域名信誉 | 没有就写「未找到」 |
 
+## 快速开始
+
+先跑自检确认环境没问题：
+
+```powershell
+.\scripts\selftest.ps1
+```
+
+二十二项检查覆盖文件完整性、脚本语法、配置解析、运行时依赖。全部 PASS 再往下走。
+
 ## 使用
 
 ```powershell
-# 1. 下载季度数据集
+# 1. 下载季度数据集（自动重试，校验三表齐全）
 .\scripts\fetch_formd.ps1 -Quarter 2026q3 -OutDir .\data
 
-# 2. 三层过滤
-.\scripts\filter_formd.ps1 -DataDir .\data\2026q3\2026Q3_d -OutCsv .\data\candidates.csv
+# 2. 三层过滤（行业 → 州 → 金额）
+.\scripts\filter_formd.ps1 -DataDir .\data\2026Q3_d -OutCsv .\data\candidates.csv
 
 # 3. 域名探测（建议按 15 家切批并行）
 .\scripts\probe_domains.ps1 -InputCsv .\data\batch_0.csv -OutCsv .\data\batch_0_result.csv
 
 # 4. 打分排序
 .\scripts\score_leads.ps1 -InputCsv .\data\final_leads.csv -OutCsv .\data\scored.csv -TopN 20
+
+# 5. 生成报告（HTML + PDF）
+.\scripts\build_report.ps1 -LeadsCsv .\data\final_leads.csv -ScoredCsv .\data\scored.csv
 ```
+
+## 改参数不用改脚本
+
+所有阈值集中在 [config/default.json](config/default.json)：
+
+```jsonc
+{
+  "filter": {
+    "minAmountUsd": 5000000,        // 金额下限
+    "maxAmountUsd": 25000000,       // 金额上限
+    "industries": ["Other Technology", "Computers"],
+    "statesWhitelist": ["CA", "NY", ...]
+  },
+  "scoring": {
+    "weights": { "hasContact": 30, "implementationSignals": 30, ... },
+    "implementationKeywords": ["集成", "对接", "实施", ...],
+    "hardwareKeywords": ["硬件", "卫星", "生物", ...]
+  },
+  "probe": {
+    "tlds": [".com", ".ai", ".io", ".co"],
+    "parkingPatterns": ["/lander", "for sale", ...],
+    "teamPagePaths": ["/about", "/team", ...]
+  }
+}
+```
+
+换业务方向时只改这里：比如做数据服务就把 `industries` 换成 `Other Health Care`，做工程外包就把 `minAmountUsd` 调到 300 万。
+
+## 已验证的跨季度可用性
+
+| 季度 | 数据集 | 过滤结果 |
+|---|---|---|
+| 2026 Q3 | 15,952 条申报 | 160 家候选 |
+| 2026 Q1 | 15,734 条申报 | 181 家候选 |
+
+两个季度用同一套脚本、同一份配置，无需修改。Q1 的验证结果见 [examples/](examples/README.md)。
 
 ## 目录
 
 ```
-SKILL.md                          # 技能主文件
-scripts/
-  fetch_formd.ps1                 # 下载解压 Form D 数据集
-  filter_formd.ps1                # 三层过滤
-  probe_domains.ps1               # 域名探测 + 停放页过滤
-  score_leads.ps1                 # 打分排序
-references/
-  pitfalls.md                     # 12 个坑与解法
-  domain-playbook.md              # 域名探测完整规则
-  field-notes.md                  # 160 家实测数据分布
+us-funding-lead-research/
+├── SKILL.md                      方法主文件（三步流程 + 排序模型）
+├── AGENTS.md                     维护仪表盘
+├── README.md                     本文件
+├── config/
+│   └── default.json              全部阈值与关键词，改这里
+├── scripts/
+│   ├── selftest.ps1              自检：22 项环境与完整性检查
+│   ├── fetch_formd.ps1           下载解压季度数据集
+│   ├── filter_formd.ps1          三层过滤
+│   ├── probe_domains.ps1         域名探测 + 停放页过滤
+│   ├── score_leads.ps1           五维打分排序
+│   └── build_report.ps1          生成 HTML + PDF 报告
+├── references/
+│   ├── pitfalls.md               12 个坑与解法
+│   ├── domain-playbook.md        域名探测完整规则
+│   └── field-notes.md            实测数据分布与命中率
+├── docs/
+│   └── ARCHITECTURE.md           不变约束与防错清单
+├── examples/
+│   └── 2026Q3-demo/              一次完整运行的样例输出
+└── data/                         运行时目录（不入库）
 ```
-
 ## 局限
 
 - **Form D 有滞后**：申报通常在融资完成后数周，最新一个月的数据可能不全。

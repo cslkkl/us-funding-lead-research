@@ -1,0 +1,4 @@
+# 子目录与产物全部忽略，只保留本 README
+*
+!.gitignore
+!README.md

@@ -1,0 +1,77 @@
+{
+  "_comment": "筛选与打分配置。改这里，不用改脚本。",
+
+  "filter": {
+    "minAmountUsd": 5000000,
+    "maxAmountUsd": 25000000,
+    "industries": ["Other Technology", "Computers"],
+    "statesWhitelist": [
+      "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS",
+      "KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY",
+      "NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV",
+      "WI","WY","DC"
+    ]
+  },
+
+  "scoring": {
+    "weights": {
+      "hasContact": 30,
+      "hasPersonalEmail": 22,
+      "hasGenericEmail": 12,
+      "implementationSignals": 30,
+      "implementationPerHit": 5,
+      "stageIdeal": 25,
+      "stageEarly": 18,
+      "stageLarge": 8,
+      "stageSmall": 5,
+      "hardwarePenalty": -20,
+      "siteVerified": 15
+    },
+    "idealRangeUsd": [10000000, 25000000],
+    "earlyRangeUsd": [6000000, 10000000],
+    "largeThresholdUsd": 25000000,
+    "implementationKeywords": [
+      "集成","对接","实施","合规","客户系统","ERP","CRM","医院","支付",
+      "结算","多租户","定制","迁移","数据治理","政策","法规","申报",
+      "流程","工作流","API","平台"
+    ],
+    "hardwareKeywords": [
+      "硬件","设备","卫星","航天","火箭","生物","药物","临床","半导体",
+      "芯片","材料","电池","能源","太阳能","采矿","机器人本体","传感"
+    ],
+    "genericEmailPrefixes": [
+      "support","info","hello","contact","sales","press","work","demo","careers"
+    ]
+  },
+
+  "probe": {
+    "tlds": [".com", ".ai", ".io", ".co"],
+    "timeoutSec": 10,
+    "retries": 2,
+    "teamPagePaths": [
+      "/about", "/about-us", "/team", "/leadership",
+      "/leadership-team", "/company", "/our-team", "/people"
+    ],
+    "parkingSizeThresholdBytes": 300,
+    "parkingPatterns": [
+      "/lander",
+      "(?i)\\bfor sale\\b",
+      "Efty",
+      "Spaceship",
+      "HugeDomains",
+      "Sedo",
+      "(?i)Launching Soon",
+      "(?i)Ready for Development",
+      "(?i)Coming Soon",
+      "godaddy"
+    ]
+  },
+
+  "output": {
+    "statusValues": ["verified", "partial", "not_found"],
+    "excludeByDefault": [
+      "Circle","Fly.io","Atari Interactive","FreeCast",
+      "Municipal Parking Services (MPS)","Tidal Vision","Gravitics"
+    ]
+  }
+}

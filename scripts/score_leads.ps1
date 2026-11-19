@@ -75,12 +75,12 @@ $scored = foreach ($r in $rows) {
 }
 
 # 排序：未排除的优先，再按分数
-$scored = $scored | Sort-Object @{Expression={$_.Excluded}}, @{Expression={-$_.Score}}
+$scored = $scored | Sort-Object @{Expression={$_.Excluded}}, @{Expression={ -1 * $_.Score }}
 
 # 输出 topN（跳过排除项）
 $top = $scored | Where-Object { -not $_.Excluded } | Select-Object -First $TopN
 
-Write-Host "`n优先联系 Top $TopN:"
+Write-Host "`n优先联系 Top ${TopN}:"
 $top | Format-Table Company, AmountM, Contact, Title, Score -AutoSize
 
 $dir = Split-Path $OutCsv -Parent
